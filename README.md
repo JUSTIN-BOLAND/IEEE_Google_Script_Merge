@@ -6,9 +6,9 @@ For at least thirty years the IEEE Northern VA Section awarded organizational pr
 
 At a roundtable discussion in 2016, with the science coordinators from all the fairs agreed it was better to recognize more students than to give larger prizes, so we started giving one "Technology Innovation", up to five "Technology Excellence", and up to three "Technology Achievement" awards beginning in 2017, and using Microsoft Office's built-in mail merge to generate cover letters tailor to each award from three separate spreadsheets.
 
-To comply with IEEE's GDPR guidelines and their Guidelines for Working with Children introduced in 2018, winners of the 2019 fair (including a fifth regional event) were entered in a Google sheet.  There are several Add-Ons that allow merging sheet data with documents and slides, but when granting permission it was unclear whether any data could be leaked outside of IEEE.
+To comply with IEEE's GDPR guidelines and their Guidelines for Working with Children introduced in 2018, winners of the 2019 fair (including a fifth regional event) were entered in a Google sheet.  There are several Add-Ons (i.e. AutoCrat) that allow merging sheet data with documents and slides and that will probably not violate GDPR guidelines, but without code review and/or tightened access restrictions it's impossible to be certain.
 
-I wrote this bound Google Script to bulk generate cover letters and certificates from data in a single winners spreadsheet.  It can also be used to generate award certificates for the banquet and other events.  If there's interest from other sections perhaps IEEE could support it as an Add-On.
+I wrote this bound Google Script to bulk generate cover letters and certificates from data in a single winners spreadsheet.  It can also be used to generate award certificates for the banquet and other events.  You're encouraged to modify it to suit your section's needs.  If there's interest from other sections perhaps IEEE could support it as an Add-On.
 
 ## Preparation
 To use this script:
@@ -22,6 +22,7 @@ To use this script:
 To be added.
 // Required enabling the Slides API!
 // No need to open or close the presentation! var preso = SlidesApp.openById(copyId);
+
 
 ## Resources
 Some of the URL's referenced:
