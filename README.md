@@ -1,14 +1,14 @@
 # IEEE_Google_Script_Merge
-Bound Google Script to merge Sheets fields into Docs and Slides - bulk awards generation
+Bound Google Script to merge Sheets fields into Docs and Slides for bulk award generation
 
 ## Background
-For at least thirty years the IEEE Northern VA Section awarded organizational prizes at four regional fairs to the best projects related to electrical engineering.  Up to six projects per fair could be awarded a prize, and team projects could have two or three students.  Since 2014, each student received a certificate and cover letter.
+For at least thirty years the IEEE Northern VA Section awarded organizational prizes at four regional fairs to the best projects related to electrical engineering.  Up to six projects per fair could be awarded a prize, and team projects could have two or three students each.  Starting in 2014 each student receives a certificate and cover letter.
 
 At a roundtable discussion in 2016, with the science coordinators from all the fairs agreed it was better to recognize more students than to give larger prizes, so we started giving one "Technology Innovation", up to five "Technology Excellence", and up to three "Technology Achievement" awards beginning in 2017, and using Microsoft Office's built-in mail merge to generate cover letters tailor to each award from three separate spreadsheets.
 
-To comply with IEEE's GDPR guidelines and their Guidelines for Working with Children introduced in 2018, winners of the 2019 fair (including a fifth regional event) were entered in a Google sheet.  There are several Add-Ons (i.e. AutoCrat) that allow merging sheet data with documents and slides and that will probably not violate GDPR guidelines, but without code review and/or tightened access restrictions it's impossible to be certain.
+To comply with IEEE's GDPR guidelines and their Guidelines for Working with Children introduced in 2018, for the 2019 season (which also includes a fifth regional event) I wanted to generate all awards off a single Google Sheet and print them without ever touching my local disk.  There are several Add-Ons (i.e. AutoCrat) that allow merging sheet data with documents and slides and that will probably not violate GDPR guidelines, but without code review and/or tightened access restrictions it's impossible to be certain.
 
-I wrote this bound Google Script to bulk generate cover letters and certificates from data in a single winners spreadsheet.  It can also be used to generate award certificates for the banquet and other events.  You're encouraged to modify it to suit your section's needs.  If there's interest from other sections perhaps IEEE could support it as an Add-On.
+I wrote this bound Google Script to bulk generate cover letters and certificates from data in a single winners spreadsheet.  It can also be used to generate award certificates for the banquet and other events; you are welcome to modify it to suit your needs.  If there's interest from other sections perhaps IEEE could support it as an Add-On.  Note that OS X downloads the files to disk before printing anyway and Windows may also, so it doesn't completely satisfy the original goals but it does consolidate all winners in a single place and reduce cutting and pasting which reduces the changes of errors.
 
 ## Preparation
 To use this script:
@@ -19,6 +19,28 @@ To use this script:
 5. Select whether you want to generate cover letters or certificates.  The first time this is invoked you may be prompted to authorize the script to access your drive and google API's.  It's okay to do this since the code can be inspected to verify no data will be modified or leaked.
   
 ## How It Works
+This was not my first Javascript/ECMAscript-like project, but it was the first time writing in the Google Script environment, so there are definitely things can could be cleaned up and improved, and there is probably a better overall architecture - please feel free to write it!  The script has are three types of functions:
+
+### opOpen()
+This is the function that adds pulldown menu options to Google Sheets.  It's invoked when the script is Run in step 4 above.
+
+### coverLetters(), certificates(), addressLabels()
+Each of these three functions are invoked by one of the pulldown menu options added to the sheet.  All three loop over rows of the spreadsheet beginning with the second to the column headings.  Both coverLetters() and certificates() create one new file for each visited row, naming the file with both a zero-padded row number and the winner's last name.  Note that Google sheet allows multiple files in the same directory to have the same name (and we have had multiple winners in the same year with the same last name... from the same fair!), but the row number helps associate the file with the entry.
+
+For each visited row, coverLetters() loops over every column heading and searches for it bracketed by "<<" and ">>.  If found it replaces it with that column's value in the current row using the body.replaceText() function, allowing users to define their own substitution values.  The addressLabels() function uses the same replaceText() call replaces the words "Last", "First", "Address1", and "Address2" with the corresponding cell values.  It also presume there are six mailing labels per sheet so it does not generate as many
+
+The API's to manipulate Google Slides are very powerful, allowing text to be modified, graphics to be inserted, slides to be added, and more, but accomplished by creating a JSON object and passing it to the batchUpdate() method.  It's not as easy to read the JSON.stringify code that builds the object, but it seems to work faster than the changes to Docs.
+
+### getIndex(), createDuplicateDocument()
+
+
+
+
+error checking?
+making label generation more versatile - supporting different format for bulk letters.
+it would be nice if we could put all the letters and certs into a single file for easier printing!
+
+
 To be added.
 // Required enabling the Slides API!
 // No need to open or close the presentation! var preso = SlidesApp.openById(copyId);
