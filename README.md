@@ -66,6 +66,9 @@ To be added.
 // Required enabling the Slides API!
 // No need to open or close the presentation! var preso = SlidesApp.openById(copyId);
 
+## An Aside
+An IEEE section needs to be able to justify how it spends its operating budget.  Because not all fairs had enough projects that deserved a monetary prize in 2019, Northern VA spent only about $1000 in prize money, postage, and supplies - less than the prize amount approved at AdCom.  (If some of thes top prize winners and their parents attendn science fair awards, the section will comp their dinners adding somewhat to the total, but this is seen as a banquet expense.)  Prizes were mailed to 45 winners, so assuming they were unaware of IEEE or our student branches before that's a cost of about $20/student.  While not all recipients plan to major in STEM or are likey members, it doesn't take too many to join for a few years for IEEE to recoup the investment.
+
 
 ## Resources
 Some of the URL's referenced:
