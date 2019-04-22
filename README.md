@@ -21,7 +21,7 @@ To use this script:
 ## How It Works
 This was not my first Javascript/ECMAscript-like project, but it was the first time writing in the Google Script environment, so there are definitely things can could be cleaned up and improved, and there is probably a better overall architecture - please feel free to write it!  The script has are three types of functions:
 
-### opOpen()
+### onOpen()
 This is the function that adds pulldown menu options to Google Sheets.  It's invoked when the script is Run in step 4 above.
 
 ### coverLetters(), certificates(), addressLabels()
@@ -32,8 +32,20 @@ For each visited row, coverLetters() loops over every column heading and searche
 The API's to manipulate Google Slides are very powerful, allowing text to be modified, graphics to be inserted, slides to be added, and more, but accomplished by creating a JSON object and passing it to the batchUpdate() method.  It's not as easy to read the JSON.stringify code that builds the object, but it seems to work faster than the changes to Docs.
 
 ### getIndex(), createDuplicateDocument()
+These functions are called by two or three of the above menu functions.  The getIndex() function takes the array of column headers, the number of column headers, and the name of a specific header and returns the index of the column in which the specific header is found or -1 if it's not found.  The createdDuplicateDocument() function takes the name of a file to be copied and the name of a copy to make in the same directory as the original.
 
+## Enhancements
+As the first iteration of this script there are numerous possibilities for improvement in several categories.
 
+### Reducing Redundancy
+The name of the award and the template are redundant - it would be easy to define a table in another sheet that maps the award name to the award letter template file, then create a pulldown field so the user can select the award.  The value is somewhat mitigated because autocomplete reduces the changes of incorrectly entering values already present.  The same approach could be used for the date and fair names.
+
+There are two other obvious sources of redundancy: The check amount could also be computed automatically based on the award and the number of students with that project name.  The salutation (Mr. or Ms.) and the pronoun (his or her) are also redundant and could be replaced with a single gender ID field.
+
+### Selective Generation
+We may not want to (re)generate all files every time - i.e. we might want to print in batches (some fairs are held much earlier and we don't want the winners to wait), or a mistake might be caught after printing.  This could be accommodated with a dialog that allows the user to select which rows to use.  Alternatively there could be an extra column in the spreadsheet that indicates whether to process the given row, and running the script would populate that column with the date and time the letter was generated.  To reprint a specific letter just remove the entry from the row.
+
+Note that it appears creating a duplicate document with the same name as an existing document does NOT overwrite the original; Google supports multiple files in a directory with the same name.  It's also fair to point out this is mainly a time saver, since it's easy to selectively print only the newly generated files.
 
 
 error checking?
