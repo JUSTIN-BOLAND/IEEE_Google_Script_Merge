@@ -2,13 +2,13 @@
 Bound Google Script to merge Sheets fields into Docs and Slides for bulk award generation
 
 ## Background
-For at least thirty years the IEEE Northern VA Section awarded organizational prizes at four regional fairs to the best projects related to electrical engineering.  Up to six projects per fair could be awarded a prize, and team projects could have two or three students each.  Starting in 2014 each student receives a certificate and cover letter.
+For at least thirty years the IEEE Northern VA Section awarded organizational prizes at four regional fairs to the best projects related to electrical engineering.  Up to six projects per fair could be awarded a prize, and team projects could have two or three students each.  All students received certificates and some receive checks up to $250; starting in 2014 all receive a cover letter introducing them to IEEE.
 
-At a roundtable discussion in 2016, with the science coordinators from all the fairs agreed it was better to recognize more students than to give larger prizes, so we started giving one "Technology Innovation", up to five "Technology Excellence", and up to three "Technology Achievement" awards beginning in 2017, and using Microsoft Office's built-in mail merge to generate cover letters tailor to each award from three separate spreadsheets.
+At a roundtable discussion with the science coordinators in 2016, everyone agreed it was better to recognize more students than to give larger prizes, so we started giving one "Technology Innovation", up to five "Technology Excellence", and up to three "Technology Achievement" awards beginning in 2017, with a maximum award of $50.  Student information was tracked on three spreadsheets (one for each award category) so Microsoft Office's built-in mail merge could generate tailored cover letters.  Adhesive mailing labels were printed using manually entered information.
 
-To comply with IEEE's GDPR guidelines and their Guidelines for Working with Children introduced in 2018, for the 2019 season (which also includes a fifth regional event) I wanted to generate all awards off a single Google Sheet and print them without ever touching my local disk.  There are several Add-Ons (i.e. AutoCrat) that allow merging sheet data with documents and slides and that will probably not violate GDPR guidelines, but without code review and/or tightened access restrictions it's impossible to be certain.
+To comply with IEEE's GDPR guidelines and their Guidelines for Working with Children introduced in 2018 (which also added a fifth fair), I wanted to generate all awards off a single Google Sheet and print them without ever touching my local disk.  There are several Add-Ons (i.e. AutoCrat) that allow merging sheet data with documents and slides and that will probably not violate GDPR guidelines, but without code review and/or tightened access restrictions it's impossible to be certain.
 
-I wrote this bound Google Script to bulk generate cover letters and certificates from data in a single winners spreadsheet.  It can also be used to generate award certificates for the banquet and other events; you are welcome to modify it to suit your needs.  If there's interest from other sections perhaps IEEE could support it as an Add-On.  Note that OS X downloads the files to disk before printing anyway and Windows may also, so it doesn't completely satisfy the original goals but it does consolidate all winners in a single place and reduce cutting and pasting which reduces the changes of errors.
+I wrote this bound Google Script to bulk generate cover letters, certificates, and mailing labels from data in a single winners spreadsheet.  It could also be used to generate award certificates for the banquet and other events; you are welcome to modify it to suit your needs.  If there's interest from other sections perhaps IEEE could support it as an Add-On.  Note that OS X downloads the files to disk before printing anyway and Windows may also, so it doesn't completely satisfy the original goals but it does consolidate all winners in a single place and reduce cutting and pasting which reduces the changes of errors.
 
 ## Preparation
 To use this script:
@@ -47,10 +47,19 @@ We may not want to (re)generate all files every time - i.e. we might want to pri
 
 Note that it appears creating a duplicate document with the same name as an existing document does NOT overwrite the original; Google supports multiple files in a directory with the same name.  It's also fair to point out this is mainly a time saver, since it's easy to selectively print only the newly generated files.
 
+### Mailing Labels
+We currently hard-code printing six 3 1/3 x 4 in mailing labels per page (Office Depot item 612-281).  While these are a very practical size for mailing the certificates (without folding) in 9x12 envelopes, if modified for other purposes one might want to use different labels.  It would be nice to prompt the user to select different label formats.
 
-error checking?
-making label generation more versatile - supporting different format for bulk letters.
-it would be nice if we could put all the letters and certs into a single file for easier printing!
+Some fairs provide the student mailing addresses while others have us mail labels to the school for redistribution.  For the latter, I used to print just the student's name in a larger font centered on the label with the name of the school if known beneath it.  To more efficienly use labels would be nice to be able to print both types of labels on a single sheet.
+
+Obviously we don't always print an exact multiple of six labels per batch, so there is sometimes a leftover sheet with a few blank labels.  A means of selecting which labels are available would avoid having to discard sheets with unused labels.
+
+### Miscellaneous
+* The date on the letters is currently written in the template; it would be easy to have the script update it automatically.
+* Putting the generated documents in the same directories as the originals increases the likelihood of accidentally deleting the templates.  Allow the user to specify an alternate directory or having a separate template directory might be desirable.
+* Currently each cover and certificate is its own file, which makes printing slightly cumbersome.  Instead of creating new files it would be really nice to add pages to a single document.  The Slides API clearly supports this, but I'm not sure if/how to do it for Docs.
+* It would be really nice to create all the documents as new pages in a single document.
+* We need to improve error detection and handling, better documentation, follow best practices, etc.
 
 
 To be added.
@@ -64,7 +73,20 @@ Some of the URL's referenced:
 * https://opensourcehacker.com/2013/01/21/script-for-generating-google-documents-from-google-spreadsheet-data-source/
 * https://developers.google.com/apps-script/reference/drive/drive-app#getFilesByName(String)
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+* https://console.developers.google.com/apis/api/slides.googleapis.com/overview?project=project-id-8210227774820882604
+* https://developers.google.com/apps-script/guides/bound
 * https://developers.google.com/apps-script/reference/document/body#replacetextsearchpattern-replacement
 * https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app
 * https://developers.google.com/apps-script/guides/dialogs
+* https://developers.google.com/slides/quickstart/apps-script
+* https://developers.google.com/slides/how-tos/create-slide
 * https://developers.google.com/slides/how-tos/merge
+* https://developers.google.com/slides/reference/rest/v1/presentations/request
+* https://developers.google.com/slides/reference/rest/v1/presentations.pages
+* https://developers.google.com/apps-script/reference/slides/slides-app
+* https://developers.google.com/apps-script/advanced/slides
+* https://stackoverflow.com/questions/16507222/create-json-object-dynamically-via-javascript-without-concate-strings
+* https://developers.google.com/apps-script/guides/sheets/functions
+* https://developers.google.com/apps-script/guides/support/best-practices
+* https://developers.google.com/apps-script/reference/slides/selection
+
